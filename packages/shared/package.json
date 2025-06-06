@@ -1,0 +1,27 @@
+{
+  "name": "@nestjs-cqrs-event-sourcing/shared",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w",
+    "lint": "eslint \"src/**/*.ts\"",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/core": "^11.0.0",
+    "@nestjs/cqrs": "^11.0.0",
+    "class-validator": "^0.14.0",
+    "class-transformer": "^0.5.1",
+    "reflect-metadata": "^0.2.0",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  }
+} 

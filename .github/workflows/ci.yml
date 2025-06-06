@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo
+        ports:
+          - 27017:27017
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: pass
+          POSTGRES_DB: orders_read
+        ports:
+          - 5432:5432
+      nats:
+        image: nats
+        ports:
+          - 4222:4222
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+          
+      - name: Install dependencies
+        run: pnpm install
+        
+      - name: Build
+        run: pnpm build
+        
+      - name: Lint
+        run: pnpm lint
+        
+      - name: Test
+        run: pnpm test
+        
+      - name: E2E Tests
+        run: pnpm test:e2e 

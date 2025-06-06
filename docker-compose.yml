@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  orders-service:
+    build:
+      context: .
+      dockerfile: apps/orders-service/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://mongo:27017/orders
+      - NATS_URL=nats://nats:4222
+    depends_on:
+      - mongo
+      - nats
+
+  read-models-service:
+    build:
+      context: .
+      dockerfile: apps/read-models-service/Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=orders_read
+      - NATS_URL=nats://nats:4222
+    depends_on:
+      - postgres
+      - nats
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=orders_read
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  nats:
+    image: nats:latest
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+
+volumes:
+  mongo_data:
+  postgres_data: 

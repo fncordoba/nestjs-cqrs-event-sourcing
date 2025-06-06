@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/apps/orders-service",
+    "rootDir": "./src",
+    "baseUrl": "./src",
+    "sourceMap": true
+  },
+  "include": ["src/**/*"]
+}
